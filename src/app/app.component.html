@@ -1,0 +1,13 @@
+<h1>
+    Courses
+</h1>
+
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a class="nav-item nav-link" routerLink="/courses" routerLinkActive="active">Courses</a>
+        <a class="nav-item nav-link" routerLink="/createCourses" style = "cursor: pointer">Create Courses</a>
+        <a class="nav-item nav-link" routerLink="/editCourses" style = "cursor: pointer">Edit Courses</a>
+    </div>
+</nav>
+<router-outlet></router-outlet>
