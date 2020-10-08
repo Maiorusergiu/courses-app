@@ -1,8 +1,10 @@
+import { ThrowStmt } from '@angular/compiler';
+import { renderFlagCheckIfStmt } from '@angular/compiler/src/render3/view/template';
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { first } from 'rxjs/operators';
 
+import { first, timestamp } from 'rxjs/operators';
 
+import { Course } from '../_model/Course';
 import { CourseService } from '../_services/course.service';
 
 
@@ -13,20 +15,23 @@ import { CourseService } from '../_services/course.service';
   styleUrls: ['./create-courses.component.css']
 })
 export class CreateCoursesComponent implements OnInit {
-  id: string;
-  Add: boolean;
-  submitted: false;
+  courses: Course[];
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
+    
     private courseService: CourseService,
   ) { }
   
 
   ngOnInit(): void {
     
+    
   }
- 
-
+  add(course: Course) {
+    this.courseService.addcourse(course)
+    .subscribe(course =>{
+      this.courses.push(course);
+    });
+  }
+  
 }

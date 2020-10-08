@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../_services/course.service';
 import { Course } from '../_model/Course';
-import { first } from 'rxjs/operators';
-import { UrlSerializer } from '@angular/router';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -11,24 +11,24 @@ import { UrlSerializer } from '@angular/router';
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent implements OnInit {
-  courses = null;
+  
+  courses: Course[];
 
-  constructor(private courseService: CourseService) { }
+  constructor(private courseService: CourseService,
+    private httpClient: HttpClient
+    ) { }
 
   ngOnInit(): void {
-    this.courseService.getAll()
-    // first value
-    .pipe(first())
-    .subscribe(courses => this.courses = courses)
+    this.courseService.getCourses()
+    .subscribe(courses => this.courses = courses);
     
   }
-  deleteCourse (id: string) {
-    const course = this.courses.find(x => x.id === id);
-    course.isDeleting = true;
-    this.courseService.delete(id)
-    .pipe(first())
-    .subscribe(() => this.courses = this.courses.filter(x => x.id !== x.id));
 
-  }
+
+    
+  
+  
+
+  
 
 }

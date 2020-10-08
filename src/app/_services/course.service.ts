@@ -1,59 +1,43 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router'; 
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 
 import { Course } from '../_model/Course';
 import { CreateCoursesComponent } from '../create-courses/create-courses.component';
 import { environment } from '../../environments/environment';
+import { MessageService } from '../message.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService {
-  private courseSubject: BehaviorSubject<Course>;
-  public course: Observable<Course>;
-  
-
+  public course: Observable<Course>
   constructor(
     private router: Router,
+    private messageService: MessageService,
     private http: HttpClient
-  ) { 
-    this.courseSubject = new BehaviorSubject<Course>(JSON.parse(localStorage.getItem('course')));
-        this.course = this.courseSubject.asObservable();
-  }
-  public get courseValue(): Course {
-    return this.courseSubject.value;
+  ) { }
+
+  addcourse(course: Course) {
+    return this.http.post<Course>(`${environment.apiUrl}/create-courses`, course)
   }
 
-  addCourse (course: Course) {
-    return this.http.post(`${environment.apiUrl}/courses`, course)
-  }
-  getAll () {
+
+
+  getCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(`${environment.apiUrl}/courses`);
   }
-  getById(id: string) {
-    return this.http.get<Course>(`${environment.apiUrl}/courses/${id}`);
-  }
-  editCourse(id, params) {
-    return this.http.put(`${environment.apiUrl}/courses/${id}`, params)
-    .pipe(map(x => {
-      const course = {...this.courseValue, ...params };
-      localStorage.setItem('course', JSON.stringify(course));
 
-      this.courseSubject.next(course);
-      return x;
-    }));
-  }
+  deleteCourse() {
+    
 
-  delete(id: string) {
-    return this.http.delete(`${environment.apiUrl}/courses/${id}`)
-    .pipe(map(x => {
-      return x;
-    }))
   }
+  
+
+  
   
  
  

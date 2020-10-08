@@ -6,6 +6,7 @@ import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 // array in local storage for registered courses
 let courses = JSON.parse(localStorage.getItem('courses')) || [];
 
+
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -20,12 +21,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function handleRoute() {
             switch (true) {
-                case url.endsWith('/courses/register') && method === 'POST':
-                    return register();
-                case url.endsWith('/courses/authenticate') && method === 'POST':
-                    return authenticate();
+                case url.endsWith('/create-courses') && method === 'POST':
+                    return addCourse();
                 case url.endsWith('/courses') && method === 'GET':
-                    return getcourses();
+                    return getCourses();
                 case url.match(/\/courses\/\d+$/) && method === 'GET':
                     return getcourseById();
                 case url.match(/\/courses\/\d+$/) && method === 'DELETE':
@@ -38,49 +37,27 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         // route functions
 
-        function register() {
+        function addCourse() {
             const course = body
-
-            if (courses.find(x => x.coursename === course.coursename)) {
-                return error('coursename "' + course.coursename + '" is already taken')
-            }
-
-            course.id = courses.length ? Math.max(...courses.map(x => x.id)) + 1 : 1;
+           
             courses.push(course);
             localStorage.setItem('courses', JSON.stringify(courses));
 
             return ok();
         }
 
-        function authenticate() {
-            const { coursename, password } = body;
-            const course = courses.find(x => x.coursename === coursename && x.password === password);
-            if (!course) return error('coursename or password is incorrect');
-            return ok({
-                id: course.id,
-                coursename: course.coursename,
-                firstName: course.firstName,
-                lastName: course.lastName,
-                token: 'fake-jwt-token'
-            })
-        }
 
-        function getcourses() {
-            if (!isLoggedIn()) return unauthorized();
+        function getCourses() {
             return ok(courses);
         }
 
         function getcourseById() {
-            if (!isLoggedIn()) return unauthorized();
-
             const course = courses.find(x => x.id == idFromUrl());
             return ok(course);
         }
 
         function deletecourse() {
-            if (!isLoggedIn()) return unauthorized();
-
-            courses = courses.filter(x => x.id !== idFromUrl());
+            
             localStorage.setItem('courses', JSON.stringify(courses));
             return ok();
         }
@@ -91,18 +68,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return of(new HttpResponse({ status: 200, body }))
         }
 
-        function unauthorized() {
-            return throwError({ status: 401, error: { message: 'Unauthorised' } });
-        }
-
         function error(message) {
             return throwError({ error: { message } });
         }
 
-        function isLoggedIn() {
-            return headers.get('Authorization') === 'Bearer fake-jwt-token';
-        }
-
+    
         function idFromUrl() {
             const urlParts = url.split('/');
             return parseInt(urlParts[urlParts.length - 1]);

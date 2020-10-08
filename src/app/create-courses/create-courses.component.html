@@ -2,13 +2,11 @@
 
 <form>
     <div class="form-group">
-      <label for="addId">Id</label>
-      <input style = "width: 30%" type="id" class="form-control">
+      <label for="course">Name of the course</label>
+      <input style = "width: 30%" type="courseName" class="form-control" #courseName/>
     </div>
-    <div class="form-group">
-      <label for="courseName">Name of the course</label>
-      <input style = "width: 30%" type="Name" class="form-control">
-    </div>
-    <button type="submit" class="btn btn-primary">Add Course</button>
+    <button type="submit" class="btn btn-primary"
+     (click) = "add(courseName.value); courseName.value = ''">
+      Add Course</button>
   </form>
 

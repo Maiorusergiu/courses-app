@@ -2,8 +2,8 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th style="width: 10%">Id of the course</th>
-            <th style="width: 10%">Name of the course</th>
+            <th style="width: 50%">Id of the course</th>
+            <th style="width: 50%">Name of the course</th>
         </tr>
     </thead>
     <tbody>
@@ -12,9 +12,6 @@
             <td>{{course.name}}</td>
         
         <td>
-            <button (click) = "deleteCourse(courses.id)" type="button" class="btn btn-danger">
-                <span *ngIf="!courses.isDeleting">Delete</span>
-            </button>
         </td>
     </tr>
     
