@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CoursesComponent implements OnInit {
   
-  courses: Course[];
+  courses = [];
 
   constructor(private courseService: CourseService,
     private httpClient: HttpClient
@@ -24,6 +24,11 @@ export class CoursesComponent implements OnInit {
     
   }
 
+  
+delete(id: number) {
+ 
+
+}
 
     
   

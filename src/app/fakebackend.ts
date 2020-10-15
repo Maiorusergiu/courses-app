@@ -28,7 +28,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 case url.match(/\/courses\/\d+$/) && method === 'GET':
                     return getcourseById();
                 case url.match(/\/courses\/\d+$/) && method === 'DELETE':
-                    return deletecourse();
+                    return deleteCourse();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -56,7 +56,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return ok(course);
         }
 
-        function deletecourse() {
+        function deleteCourse() {
             
             localStorage.setItem('courses', JSON.stringify(courses));
             return ok();

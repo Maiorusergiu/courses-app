@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router'; 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
 
 
 import { Course } from '../_model/Course';
-import { CreateCoursesComponent } from '../create-courses/create-courses.component';
 import { environment } from '../../environments/environment';
 import { MessageService } from '../message.service';
 
@@ -14,7 +13,7 @@ import { MessageService } from '../message.service';
   providedIn: 'root'
 })
 export class CourseService {
-  public course: Observable<Course>
+  
   constructor(
     private router: Router,
     private messageService: MessageService,
@@ -31,9 +30,9 @@ export class CourseService {
     return this.http.get<Course[]>(`${environment.apiUrl}/courses`);
   }
 
-  deleteCourse() {
-    
-
+  deleteCourse(id: number) {
+    return this.http.delete(`${environment.apiUrl}/courses/${id}`);
+  
   }
   
 

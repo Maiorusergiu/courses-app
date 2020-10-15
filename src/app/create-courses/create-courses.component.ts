@@ -15,7 +15,7 @@ import { CourseService } from '../_services/course.service';
   styleUrls: ['./create-courses.component.css']
 })
 export class CreateCoursesComponent implements OnInit {
-  courses: Course[];
+  courses = [];
 
   constructor(
     

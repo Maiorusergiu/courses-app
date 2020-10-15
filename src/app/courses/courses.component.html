@@ -1,20 +1,18 @@
 <h1>List of courses</h1>
 <table class="table table-striped">
-    <thead>
-        <tr>
-            <th style="width: 50%">Id of the course</th>
-            <th style="width: 50%">Name of the course</th>
-        </tr>
-    </thead>
-    <tbody>
-       <tr *ngFor ="let course of courses">
-            <td>{{course.id}}</td>
-            <td>{{course.name}}</td>
-        
-        <td>
-        </td>
+  <thead>
+    <tr>
+      <th scope="col">Id of the course</th>
+      <th scope="col">Name of the course</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let course of courses">
+      <th scope="row">{{course.id}}</th>
+      <td>{{courses.name}}</td>
+      <button routerLink="/editCourses" type="button" style = "margin: 10px" class="btn btn-primary">Edit</button>
+      <button (click)="deleteCourse(course)" type="button" style = "margin: 10px" class="btn btn-danger">Delete</button>
     </tr>
     
-        
-    </tbody>
+  </tbody>
 </table>
